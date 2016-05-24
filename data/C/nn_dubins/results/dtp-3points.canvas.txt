@@ -1,0 +1,115 @@
+# CCanvasObjectSaver version 1.0
+# CoordsTransform: View2Real
+# ViewTransform: VIEW:480x480;BORDER:10,10;REAL_X:-2.85226,3.45726;REAL_Y:-3,3.92033;ASPECT:1;
+[OBJECT]
+[AREA]
+-2.85226 -3
+3.45726 3.92033
+
+[OBJECT]
+TAGS=dubins
+SHAPE=pen_color:red;fill_color:black;pen_alpha:1;fill_alpha:1;width:5;radius:0;zoom:0;fill:0;outline:1;depth:41;
+[ARC]
+0.490803 1.17715
+-1.98942 4.05706
+-3.07204 4.14688
+
+
+[OBJECT]
+TAGS=dubins
+[ARC]
+0 1
+-1.98942 4.05706
+-3.05881 4.14167
+
+
+[OBJECT]
+TAGS=dubins
+[SEGMENT]
+0.830307 0.236547
+0.339504 0.0593954
+
+
+[OBJECT]
+TAGS=dubins
+[SEGMENT]
+0.4309 0.171574
+0.339504 0.0593954
+
+
+[OBJECT]
+TAGS=dubins
+[SEGMENT]
+0.339504 0.0593954
+0.473777 0.0286706
+
+
+[OBJECT]
+TAGS=dubins
+[LINESTRING]
+0.473777 0.0286706
+
+
+[OBJECT]
+TAGS=dubins
+[ARC]
+0 -1
+-1.98942 4.05706
+-3.08811 4.09441
+
+
+[OBJECT]
+TAGS=dubins
+[ARC]
+-1.38693 0.0752753
+-1.98942 4.05706
+-3.08941 4.17901
+
+
+[OBJECT]
+TAGS=dubins
+[SEGMENT]
+0.612715 -0.209696
+-0.774217 0.865579
+
+
+[OBJECT]
+TAGS=dubins
+[SEGMENT]
+-0.63763 0.8518
+-0.774217 0.865579
+
+
+[OBJECT]
+TAGS=dubins
+[SEGMENT]
+-0.774217 0.865579
+-0.716803 0.728951
+
+
+[OBJECT]
+TAGS=dubins
+[LINESTRING]
+-0.716803 0.728951
+
+
+[OBJECT]
+TAGS=points
+SHAPE=pen_color:black;fill_color:green;pen_alpha:1;fill_alpha:1;width:1;radius:4;zoom:0;fill:1;outline:0;depth:15;
+[POINT]
+1.45726 0.920335
+
+
+[OBJECT]
+TAGS=points
+[POINT]
+-0.85226 0.920335
+
+
+[OBJECT]
+TAGS=points
+SHAPE=pen_color:black;fill_color:orange;pen_alpha:1;fill_alpha:1;width:1;radius:4;zoom:0;fill:1;outline:0;depth:15;
+[POINT]
+0 4.44089e-16
+
+

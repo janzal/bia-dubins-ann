@@ -1,0 +1,53 @@
+/*
+ * dtype.h - Types of Dubins maneuver
+ *
+ *  Created on: Mar 6, 2016
+ *      Author: Petr Vana
+ */
+
+#pragma once
+
+namespace opendubins {
+
+    enum struct DType {
+        Unknown,
+
+        RSR,
+        LSL,
+        RSL,
+        LSR,
+        RLR,
+        LRL,
+
+        // Dubins Interval Problem ----------------------------------------
+        // CSC and CCC maneuvers used from Dubins maneuver
+        DIP_S,
+        DIP_Rp,
+        DIP_Lp,
+        DIP_RS,
+        DIP_LS,
+        DIP_SR,
+        DIP_SL,
+        DIP_RLp,
+        DIP_LRp,
+        DIP_RpL,
+        DIP_LpR,
+
+        // special cases - this should never happen
+        DIP_LpRp,
+        DIP_RpLp,
+
+        // Generalized Dubins Interval Problem
+        GDIP_S,
+        GDIP_RS,
+        GDIP_LS,
+        GDIP_SR,
+        GDIP_SL,
+        GDIP_RSR,
+        GDIP_LSL,
+        GDIP_RSL,
+        GDIP_LSR,
+        GDIP_LRL,
+        GDIP_RLR
+    };
+}

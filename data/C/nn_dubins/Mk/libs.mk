@@ -1,0 +1,44 @@
+#
+# Date:      2011/07/11 17:55
+# Author:    Jan Faigl
+#
+
+OPSYS=$(shell uname)
+
+PLATFORM=$(shell uname -p)
+ARCH=.$(PLATFORM)
+
+ifeq ($(OPSYS),FreeBSD)
+   LOG4CXX_LDFLAGS=-L/usr/local/lib -llog4cxx
+
+   BOOST_CFLAGS=-I/usr/local/include
+   BOOST_LIBS:=-lboost_program_options -lboost_thread -lboost_filesystem -lboost_iostreams -lboost_system
+
+   CAIRO_LIBS+=-lcairo -pthread -lX11
+else ifeq ($(OPSYS),Darwin)
+   LOG4CXX_LDFLAGS=-L/usr/local/lib -llog4cxx
+
+   BOOST_CFLAGS=-I/usr/local/include
+   BOOST_LIBS:=-lboost_program_options -lboost_thread-mt -lboost_filesystem -lboost_iostreams -lboost_system
+
+   CAIRO_LIBS+=-L /opt/X11/lib -lcairo -lX11
+else
+   LOG4CXX_CPPFLAGS=$(shell pkg-config --cflags liblog4cxx)
+   LOG4CXX_LDFLAGS=$(shell pkg-config --libs liblog4cxx)
+   LOG4CXX_LDFLAGS+=-llog4cxx
+
+   BOOST_LIBS:=-lboost_program_options -lboost_thread -lboost_filesystem -lboost_iostreams -lboost_system
+
+   CAIRO_LIBS:=-L/usr/X11/lib
+   CAIRO_CFLAGS:=-I/usr/X11/include
+   CAIRO_LIBS+=-lcairo -pthread -lX11
+endif
+
+LOCAL_CFLAGS=-Iinclude
+LOCAL_LDFLAGS=-Llib
+
+IMR-H-GUI_LDFLAGS=-limr-h-gui
+IMR-H_LIBS=-limr-h
+
+OPENDUBINS_LIBS=-lopendubins_planning -lopendubins_core 
+
