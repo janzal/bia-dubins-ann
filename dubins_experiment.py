@@ -23,20 +23,14 @@ x_trn, t_trn, x_val, t_val = dataset
 # t_val = np.array(map(discretize, t_val))
 # print("Done!")
 
-nr_classes = 16
+nr_classes = 8
 
 
-# def create_classes(x):
-#     result = np.zeros(nr_classes)
-#     result_class = np.floor((nr_classes / (2.0 * np.pi)) * x) % 16
-#     result[result_class] = 1
-#     return result
-#
-#
-# print("Discretizing...")
-# tri_t_trn = np.array(map(create_classes, t_trn))
-# tri_t_val = np.array(map(create_classes, t_val))
-# print("Done!")
+def create_classes(x):
+    result = np.zeros(nr_classes)
+    result_class = np.floor((nr_classes / (2.0 * np.pi)) * x) % nr_classes
+    result[result_class] = 1
+    return result
 
 
 def split_angle(x, preserve_original=False):
@@ -65,13 +59,18 @@ def split_angle_with_original(x):
 
 print("Preparing datasets...")
 
-print("Preparing outputs")
-tri_t_trn = np.array(map(split_angle_without_original, t_trn))
-tri_t_val = np.array(map(split_angle_without_original, t_val))
+# print("Preparing outputs")
+# tri_t_trn = np.array(map(split_angle_without_original, t_trn))
+# tri_t_val = np.array(map(split_angle_without_original, t_val))
+
+print("Discretizing outputs...")
+tri_t_trn = np.array(map(create_classes, t_trn))
+tri_t_val = np.array(map(create_classes, t_val))
 
 print("Preparing inputs")
 tri_x_trn = np.array(map(mappings.normalize_values_5, x_trn))
 tri_x_val = np.array(map(mappings.normalize_values_5, x_val))
+
 print("Done!")
 
 # fig = plt.figure()
@@ -161,8 +160,8 @@ def dense_model_small(input_size, output_size):
     model = Sequential()
     model.add(Dense(15, input_dim=input_size))
     model.add(Activation('tanh'))
-    model.add(Dense(8))
-    model.add(Activation('relu'))
+    model.add(Dense(13))
+    model.add(Activation('tanh'))
     model.add(Dense(output_size))
     model.add(Activation('tanh'))
 
@@ -218,7 +217,7 @@ experiment_description = ''
 load_from_file = False
 save_learned_model = True
 input_size = 7
-output_size = 2
+output_size = nr_classes
 
 model = None
 if load_from_file:
@@ -228,7 +227,7 @@ if load_from_file:
     model.compile(loss='mean_squared_error', optimizer='sgd')
 else:
     model = dense_model_small(input_size, output_size)
-    history_cb = model.fit(tri_x_trn, tri_t_trn, batch_size=32, nb_epoch=2, verbose=1)
+    history_cb = model.fit(tri_x_trn, tri_t_trn, batch_size=32, nb_epoch=50, verbose=1)
     # history_cb = model.fit(x_trn, tri_t_trn, batch_size=128, nb_epoch=500, verbose=1)
 
     if save_learned_model:
@@ -248,9 +247,11 @@ score = model.evaluate(tri_x_val, tri_t_val)
 print(score)
 
 # print(model.predict(x_trn), tri_t_trn)
-prediction = model.predict(tri_x_trn)
+prediction = model.predict_classes(tri_x_trn)
 
 for i in range(0, 100):
-    print(prediction[i], tri_t_trn[i],
-          np.arctan(np.arcsin(prediction[i][0])/np.arccos(prediction[i][1])),
-          np.arctan(np.arcsin(tri_t_trn[i][0])/np.arccos(tri_t_trn[i][1])))
+    # print(prediction[i], tri_t_trn[i],
+    #       np.arctan(np.arcsin(prediction[i][0]) / np.arccos(prediction[i][1])),
+    #       np.arctan(np.arcsin(tri_t_trn[i][0]) / np.arccos(tri_t_trn[i][1])))
+
+    print(prediction[i], tri_t_trn[i])
