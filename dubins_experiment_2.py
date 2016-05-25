@@ -4,13 +4,11 @@ import math
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-import mappings
 
-# dataset = pickle.load(open('./datasets/datasets_midpoint_3DOF_1M.p', 'rb'))
+dataset = pickle.load(open('./datasets/datasets_midpoint_3DOF_1M.p', 'rb'))
 # dataset = pickle.load(open('./datasets/datasets_midpoint_3DOF_1K.p', 'rb'))
 # dataset = pickle.load(open('./datasets/datasets_midpoint_3DOF_500.p', 'rb'))
 # dataset = pickle.load(open('./datasets/datasets_midpoint_5DOF_resolution16_10M.p', 'rb'))
-dataset = pickle.load(open('./datasets/datasets_midpoint_5DOF_resolution8_1M.p', 'rb'))
 x_trn, t_trn, x_val, t_val = dataset
 
 # def discretize(x):
@@ -62,16 +60,15 @@ def split_angle_without_original(x):
 def split_angle_with_original(x):
     return split_angle(x, True)
 
+def split_training_angle(x):
+    result = np.empty()
 
-print("Preparing datasets...")
 
-print("Preparing outputs")
+print("Splitting to trigonometric functions...")
+tri_x_trn = np.array(map(split_training_angle, x_trn))
+tri_x_val = np.array(map(split_training_angle, x_val))
 tri_t_trn = np.array(map(split_angle_without_original, t_trn))
 tri_t_val = np.array(map(split_angle_without_original, t_val))
-
-print("Preparing inputs")
-tri_x_trn = np.array(map(mappings.normalize_values_5, x_trn))
-tri_x_val = np.array(map(mappings.normalize_values_5, x_val))
 print("Done!")
 
 # fig = plt.figure()
@@ -157,20 +154,6 @@ def dense_model(input_size, output_size):
     return model
 
 
-def dense_model_small(input_size, output_size):
-    model = Sequential()
-    model.add(Dense(15, input_dim=input_size))
-    model.add(Activation('tanh'))
-    model.add(Dense(8))
-    model.add(Activation('relu'))
-    model.add(Dense(output_size))
-    model.add(Activation('tanh'))
-
-    model.compile(loss='mean_squared_error', optimizer='sgd', metrics=['accuracy'])
-
-    return model
-
-
 # experiment with all tanh was not good
 def dense_model_classif(input_size, output_size):
     model = Sequential()
@@ -214,21 +197,20 @@ def dense_mae_model(input_size, output_size):
     return model
 
 
-experiment_description = ''
 load_from_file = False
 save_learned_model = True
-input_size = 7
+input_size = 3
 output_size = 2
 
 model = None
 if load_from_file:
-    ts = '1464167032'
+    ts = '1464135107'
     model = model_from_json(open('models/model_arch_{}.json'.format(ts)).read())
     model.load_weights('models/model_weights_{}.h5'.format(ts))
     model.compile(loss='mean_squared_error', optimizer='sgd')
 else:
-    model = dense_model_small(input_size, output_size)
-    history_cb = model.fit(tri_x_trn, tri_t_trn, batch_size=32, nb_epoch=2, verbose=1)
+    model = dense_model(input_size, output_size)
+    history_cb = model.fit(x_trn, tri_t_trn, batch_size=32, nb_epoch=1000, verbose=1)
     # history_cb = model.fit(x_trn, tri_t_trn, batch_size=128, nb_epoch=500, verbose=1)
 
     if save_learned_model:
@@ -241,16 +223,14 @@ else:
         pickle.dump(history_cb.history, open('models/history_{}.p'.format(ts), 'w'))
         plot(model, to_file='models/model_{}.png'.format(ts), show_shapes=True)
 
-score = model.evaluate(tri_x_trn, tri_t_trn)
+score = model.evaluate(x_trn, tri_t_trn)
 print(score)
 
-score = model.evaluate(tri_x_val, tri_t_val)
+score = model.evaluate(x_val, tri_t_val)
 print(score)
 
 # print(model.predict(x_trn), tri_t_trn)
-prediction = model.predict(tri_x_trn)
+prediction = model.predict(x_trn)
 
 for i in range(0, 100):
-    print(prediction[i], tri_t_trn[i],
-          np.arctan(np.arcsin(prediction[i][0])/np.arccos(prediction[i][1])),
-          np.arctan(np.arcsin(tri_t_trn[i][0])/np.arccos(tri_t_trn[i][1])))
+    print(prediction[i], tri_t_trn[i])

@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
     rnd = np.random.RandomState(1234)
 
-    n_patterns = 1000000
+    n_patterns = 10000000
     path = '/Users/janzaloudek/Development/Skola/BIA/dubin/assignment/'
 
     # x_trn, t_trn = generate_dataset_2dof(n_patterns)
@@ -94,15 +94,15 @@ if __name__ == '__main__':
     # x_val, t_val = generate_dataset_5dof(n_patterns, resolution=resolution)
     # pickle.dump((x_trn, t_trn, x_val, t_val), open(path + 'datasets/datasets_midpoint_5DOF_resolution4_1M.p', 'w'))
 
-    resolution = 16
-    x_trn, t_trn = generate_dataset_5dof(n_patterns, resolution=resolution)
-    x_val, t_val = generate_dataset_5dof(n_patterns, resolution=resolution)
-    pickle.dump((x_trn, t_trn, x_val, t_val), open(path + 'datasets/datasets_midpoint_5DOF_resolution16_10M.p', 'w'))
-
-    # resolution = 8
+    # resolution = 16
     # x_trn, t_trn = generate_dataset_5dof(n_patterns, resolution=resolution)
     # x_val, t_val = generate_dataset_5dof(n_patterns, resolution=resolution)
-    # pickle.dump((x_trn, t_trn, x_val, t_val), open(path + 'datasets/datasets_midpoint_5DOF_resolution8_1K.p', 'w'))
+    # pickle.dump((x_trn, t_trn, x_val, t_val), open(path + 'datasets/datasets_midpoint_5DOF_resolution16_10M.p', 'w'))
+
+    resolution = 8
+    x_trn, t_trn = generate_dataset_5dof(n_patterns, resolution=resolution)
+    x_val, t_val = generate_dataset_5dof(n_patterns, resolution=resolution)
+    pickle.dump((x_trn, t_trn, x_val, t_val), open(path + 'datasets/datasets_midpoint_5DOF_resolution8_10M.p', 'w'))
 
     # resolution = 8
     # x_trn, t_trn = generate_dataset_3dof(n_patterns, resolution=resolution)

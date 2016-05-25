@@ -20,14 +20,14 @@ LDFLAGS+=$(OPENDUBINS_LIBS)
 CXXFLAGS+=-O2 -march=native
 CXXFLAGS+=-g
 
-OBJS=\
-    dubins_demo.o\
-    tdubins.o
+#OBJS=\
+#    dubins_demo.o\
+#    tdubins.o
 
-# OBJS=pythonapi.o
+OBJS=pythonapi.o
 
-TARGET=tdubins
-# TARGET=pythonapi
+#TARGET=tdubins
+TARGET=pythonapi
 
 pythonapi.so: $(OBJS)
 	$(CXX) -shared -Wl -o libpythonapi.so $(OBJS) $(LDFLAGS)
